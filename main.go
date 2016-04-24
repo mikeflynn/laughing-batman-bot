@@ -25,6 +25,7 @@ func main() {
 	fbrouter.HandleFunc("/facebook/webhook", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("hub.verify_token") == "laughingbatman" {
 			w.Write([]byte(r.URL.Query().Get("hub.challenge")))
+			return
 		}
 
 		w.Write([]byte("Error, wrong validation token"))
