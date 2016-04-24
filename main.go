@@ -50,6 +50,7 @@ func main() {
 		}
 
 		if err := json.Unmarshal(body, &callback); err != nil {
+			log.Println("Invalid callback")
 			http.Error(w, "Invalid callback.", 400)
 			return
 		}
