@@ -22,7 +22,7 @@ func main() {
 		negroni.Wrap(fbrouter),
 	))
 
-	fbrouter.HandleFunc("/facebook/", func(w http.ResponseWriter, r *http.Request) {
+	fbrouter.HandleFunc("/facebook/webhook", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("hub.verify_token") == "laughingbatman" {
 			w.Write([]byte(r.URL.Query().Get("hub.challenge")))
 		}
