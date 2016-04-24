@@ -54,6 +54,9 @@ func main() {
 			return
 		}
 
+		jsonStr, _ := json.Marshal(callback)
+		log.Println(string(jsonStr))
+
 		for _, msg := range callback.Entry[0].Messaging {
 			log.Println(msg.Message.Text)
 
