@@ -36,6 +36,8 @@ func main() {
 	*/
 
 	fbrouter.HandleFunc("/facebook/webhook", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Webhook request!")
+
 		var callback Callback
 		body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 		if err != nil {
