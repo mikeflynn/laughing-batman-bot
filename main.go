@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	//"fmt"
+	"bytes"
 	"io"
 	"io/ioutil"
 	"log"
@@ -55,6 +56,8 @@ func main() {
 
 		for _, msg := range callback.Entry[0].Messaging {
 			log.Println(msg.Message.Text)
+
+			sendMessage(msg.Sender.ID, "Thanks for the message!")
 		}
 
 		w.Write([]byte(""))
@@ -65,6 +68,26 @@ func main() {
 	n := negroni.Classic()
 	n.UseHandler(router)
 	http.ListenAndServe(":3001", router)
+}
+
+func sendMessage(userID string, text string) {
+	msg := OutgoingMessage{}
+	msg.Recipient.ID = userID
+	msg.Message.Text = text
+	jsonBytes, _ := json.Marshal(msg)
+
+	req, err := http.NewRequest("POST", "https://graph.facebook.com/v2.6/me/messages", bytes.NewBuffer(jsonBytes))
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+
+	defer resp.Body.Close()
+
+	log.Println("Send Response Status:", resp.Status)
 }
 
 type Callback struct {
@@ -91,4 +114,27 @@ type CallbackEntryMessage struct {
 		Seq  uint64 `json:"seq"`
 		Text string `json:"text"`
 	}
+	Attachments []struct {
+		Type    string `json:"type"`
+		Payload struct {
+			URL string `json:"url"`
+		} `json:"payload"`
+	} `json:"attachments"`
+	Delivery []struct {
+		MIDs      []string `json:"mids"`
+		Watermark uint64   `json:"watermark"`
+		Seq       uint64   `json:"seq"`
+	}
+	Postback struct {
+		Payload string `json:"payload"`
+	}
+}
+
+type OutgoingMessage struct {
+	Recipient struct {
+		ID string `json:"id"`
+	} `json:"recipient"`
+	Message struct {
+		Text string `json:"text"`
+	} `json:"message"`
 }
