@@ -18,7 +18,7 @@ import (
 
 func main() {
 	router := mux.NewRouter().StrictSlash(false)
-	fbrouter := mux.NewRouter()
+	fbrouter := mux.NewRouter().StrictSlash(false)
 
 	router.PathPrefix("/facebook").Handler(negroni.New(
 		negroni.Wrap(fbrouter),
@@ -47,13 +47,15 @@ func main() {
 		}
 
 		if err := json.Unmarshal(body, &callback); err != nil {
-			http.Error(w, "Invalid callback.", 401)
+			http.Error(w, "Invalid callback.", 400)
 			return
 		}
 
 		for _, msg := range callback.Entry[0].Messaging {
 			log.Println(msg.Message.Text)
 		}
+
+		w.Write([]byte(""))
 	}).Methods("GET", "POST")
 
 	log.Println("Server started on port 3001")
