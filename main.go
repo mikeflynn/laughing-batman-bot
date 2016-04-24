@@ -1,17 +1,17 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	//"encoding/json"
+	//"fmt"
 	"log"
 	"net/http"
-	"strconv"
-	"time"
+	//"strconv"
+	//"time"
 
 	"github.com/codegangsta/negroni"
-	"github.com/gorilla/context"
+	//"github.com/gorilla/context"
 	"github.com/gorilla/mux"
-	"github.com/kr/pretty"
+	//"github.com/kr/pretty"
 )
 
 func main() {
@@ -22,15 +22,15 @@ func main() {
 		negroni.Wrap(fbrouter),
 	))
 
-	log.Println("Server started on port 8888")
-
 	fbrouter.HandleFunc("/facebook/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("hub.verify_token") == "laughingbatman" {
-			w.Write(r.URL.Query().Get("hub.challenge"))
+			w.Write([]byte(r.URL.Query().Get("hub.challenge")))
 		}
 
-		w.Write("Error, wrong validation token")
+		w.Write([]byte("Error, wrong validation token"))
 	})
+
+	log.Println("Server started on port 3001")
 
 	n := negroni.Classic()
 	n.UseHandler(router)
