@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	//"fmt"
 	"bytes"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -40,7 +39,7 @@ func main() {
 		log.Println("Webhook request!")
 
 		var callback Callback
-		body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			panic(err)
 		}
@@ -49,14 +48,13 @@ func main() {
 			panic(err)
 		}
 
+		log.Println(string(body))
+
 		if err := json.Unmarshal(body, &callback); err != nil {
 			log.Println("Invalid callback")
 			http.Error(w, "Invalid callback.", 400)
 			return
 		}
-
-		jsonStr, _ := json.Marshal(callback)
-		log.Println(string(jsonStr))
 
 		for _, msg := range callback.Entry[0].Messaging {
 			log.Println(msg.Message.Text)
