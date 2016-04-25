@@ -98,9 +98,9 @@ type Callback struct {
 }
 
 type CallbackEntry struct {
-	ID        string `json:"id"`
-	Time      uint64 `json:"time"`
-	Messaging []CallbackEntryMessage
+	ID        string                 `json:"id"`
+	Time      uint64                 `json:"time"`
+	Messaging []CallbackEntryMessage `json:"messaging"`
 }
 
 type CallbackEntryMessage struct {
