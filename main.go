@@ -72,7 +72,7 @@ func main() {
 	http.ListenAndServe(":3001", router)
 }
 
-func sendMessage(userID string, text string) {
+func sendMessage(userID uint64, text string) {
 	msg := OutgoingMessage{}
 	msg.Recipient.ID = userID
 	msg.Message.Text = text
@@ -134,7 +134,7 @@ type CallbackEntryMessage struct {
 
 type OutgoingMessage struct {
 	Recipient struct {
-		ID string `json:"id"`
+		ID uint64 `json:"id"`
 	} `json:"recipient"`
 	Message struct {
 		Text string `json:"text"`
