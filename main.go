@@ -123,7 +123,7 @@ type CallbackEntryMessage struct {
 			URL string `json:"url"`
 		} `json:"payload"`
 	} `json:"attachments"`
-	Delivery []struct {
+	Delivery struct {
 		MIDs      []string `json:"mids"`
 		Watermark uint64   `json:"watermark"`
 		Seq       uint64   `json:"seq"`
