@@ -60,7 +60,9 @@ func main() {
 		for _, msg := range callback.Entry[0].Messaging {
 			log.Println(msg.Message.Text)
 
-			sendMessage(msg.Sender.ID, "Thanks for the message!")
+			if msg.Message.Text != "" {
+				sendMessage(msg.Sender.ID, "Thanks for the message!")
+			}
 		}
 
 		w.Write([]byte(""))
