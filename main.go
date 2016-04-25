@@ -105,10 +105,10 @@ type CallbackEntry struct {
 
 type CallbackEntryMessage struct {
 	Sender struct {
-		ID string `json:"id"`
+		ID uint64 `json:"id"`
 	} `json:"sender"`
 	Recipient struct {
-		ID string `json:"id"`
+		ID uint64 `json:"id"`
 	} `json:"recipient"`
 	Timestamp uint64 `json:"timestamp"`
 	Message   struct {
