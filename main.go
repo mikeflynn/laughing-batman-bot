@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	//"strconv"
 	//"time"
 
@@ -78,7 +79,7 @@ func sendMessage(userID uint64, text string) {
 	msg.Message.Text = text
 	jsonBytes, _ := json.Marshal(msg)
 
-	req, err := http.NewRequest("POST", "https://graph.facebook.com/v2.6/me/messages", bytes.NewBuffer(jsonBytes))
+	req, err := http.NewRequest("POST", "https://graph.facebook.com/v2.6/me/messages?access_token="+os.Getenv("PAGE_TOKEN"), bytes.NewBuffer(jsonBytes))
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
