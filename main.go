@@ -127,10 +127,10 @@ type CallbackEntryMessage struct {
 		MIDs      []string `json:"mids"`
 		Watermark uint64   `json:"watermark"`
 		Seq       uint64   `json:"seq"`
-	}
+	} `json:"delivery"`
 	Postback struct {
 		Payload string `json:"payload"`
-	}
+	} `json:"postback"`
 }
 
 type OutgoingMessage struct {
